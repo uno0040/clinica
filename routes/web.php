@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 // rota para mostrar os dados do usuario
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+// rota para criacao de usuarios
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
 // Route::get('/', function () {
 //     return view('welcome');
 // });

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Usuário</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h1>Adicionar Usuário</h1>
@@ -78,5 +79,25 @@
     </form>
 
     <p><a href="{{ route('users.index') }}">Voltar à lista de usuários</a></p>
+
+    <script>
+        $(document).ready(function() {
+            $('#cep').on('blur', function() {
+                var cep = $(this).val().replace(/\D/g, '');
+                if (cep !== '') {
+                    $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(data) {
+                        if (!("erro" in data)) {
+                            $('#logradouro').val(data.logradouro);
+                            $('#bairro').val(data.bairro);
+                            $('#localidade').val(data.localidade);
+                            $('#uf').val(data.uf);
+                        } else {
+                            alert('CEP não encontrado.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

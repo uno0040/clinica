@@ -7,6 +7,9 @@
 </head>
 <body>
     <h1>Lista de Usuários</h1>
+
+    <p><a href="{{ route('users.create') }}">Adicionar Novo Usuário</a></p>
+
     <ul>
         @foreach($users as $user)
             <li>
