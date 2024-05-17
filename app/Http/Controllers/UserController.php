@@ -80,33 +80,32 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        
+        $user = User::findOrFail($id);
+        return view('users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        $user = new User;
-        $user->username = $request->username; // request('username'); se nao funcionar
-        $user->name = $request->name;
-        $user->senha = $request->senha;
-        $user->cpf = $request->cpf;
-        $user->email = $request->email;
-        $user->telefone = $request->telefone;
-        $user->dob = $request->dob;
-        $user->cep = $request->cep;
-        $user->logradouro = $request->logradouro;
-        $user->complemento = $request->complemento;
-        $user->bairro = $request->bairro;
-        $user->localidade = $request->localidade;
-        $user->uf = $request->uf;
-        
+        $request->validate([
+            'username' => 'required|unique:users,username,' . $id,
+            'name' => 'required',
+            'senha' => 'required',
+            'cpf' => 'required|unique:users,cpf,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
+            'telefone' => 'required',
+            'dob' => 'required|date',
+            'cep' => 'required',
+        ]);
 
-        $user->save();
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+
+        return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso!');
     }
 
     /**
